@@ -9,4 +9,4 @@ export const projectSchema = z.object({
 })
 
 export type Project = z.infer<typeof projectSchema>
-export type ProjectFormData = Pick<Project, 'clientName' | 'description' | 'projectName'>
+export type ProjectFormData = Pick<Project, 'projectName' | 'clientName' | 'description'>

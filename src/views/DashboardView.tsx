@@ -8,24 +8,38 @@ import {
 } from "@headlessui/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
 
-import { getProjects } from "@/api/ProjectAPI";
-import { useQuery } from "@tanstack/react-query";
+import { deleteProject, getProjects } from "@/api/ProjectAPI";
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function DashboardView() {
   const { data, isLoading } = useQuery({
     queryKey: ["projects"],
     queryFn: getProjects,
   });
+
+  const queryClient = useQueryClient()
+  const { mutate } = useMutation({
+    mutationFn: deleteProject,
+    onError: (error) => {
+      toast.error(error.message)
+    },
+    onSuccess: (data) => {
+      toast.success(data)
+      queryClient.invalidateQueries({queryKey: ["projects"]})
+    }
+  })
+
   if (isLoading) return "Loading...";
   console.log(data);
 
   if (data)
     return (
       <>
-        <h1 className="text-5xl font-black ">Mis Proyectos</h1>
+        <h1 className="text-5xl font-black ">My projects</h1>
         <p className="text-2xl font-light text-gray-500 mt-5">
-          Maneja y administra tus proyectos
+          Manage your projects
         </p>
 
         <nav className="my-5">
@@ -33,7 +47,7 @@ export default function DashboardView() {
             className="bg-purple-400 hover:bg-purple-500 px-10 py-3 text-white text-xl font-bold cursor-pointer transition-colors rounded-xl"
             to="/projects/create"
           >
-            Nuevo proyecto
+            New project
           </Link>
         </nav>
         {data.length ? (
@@ -55,7 +69,7 @@ export default function DashboardView() {
                       {project.projectName}
                     </Link>
                     <p className="text-sm text-gray-400">
-                      Cliente: {project.clientName}
+                      Client: {project.clientName}
                     </p>
                     <p className="text-sm text-gray-400">
                       {project.description}
@@ -65,7 +79,7 @@ export default function DashboardView() {
                 <div className="flex shrink-0 items-center gap-x-6">
                   <Menu as="div" className="relative flex-none">
                     <MenuButton className="-m-2.5 block p-2.5 text-gray-500 hover:text-gray-900">
-                      <span className="sr-only">opciones</span>
+                      <span className="sr-only">options</span>
                       <EllipsisVerticalIcon
                         className="h-9 w-9"
                         aria-hidden="true"
@@ -86,24 +100,24 @@ export default function DashboardView() {
                             to={``}
                             className="block px-3 py-1 text-sm leading-6 text-gray-900"
                           >
-                            Ver Proyecto
+                            See project
                           </Link>
                         </MenuItem>
                         <MenuItem>
                           <Link
-                            to={``}
+                            to={`/projects/${project._id}/edit`}
                             className="block px-3 py-1 text-sm leading-6 text-gray-900"
                           >
-                            Editar Proyecto
+                            Edit project
                           </Link>
                         </MenuItem>
                         <MenuItem>
                           <button
                             type="button"
                             className="block px-3 py-1 text-sm leading-6 text-red-500"
-                            onClick={() => {}}
+                            onClick={() => mutate(project._id)}
                           >
-                            Eliminar Proyecto
+                            Delete project
                           </button>
                         </MenuItem>
                       </MenuItems>
@@ -116,12 +130,12 @@ export default function DashboardView() {
         ) : (
           <>
             <p className="text-center py-20">
-              No hay proyectos aun. {""}
+              There is no projects yet. {""}
               <Link
                 to="/projects/create"
                 className="text-fuchsia-500 font-bold"
               >
-                Crear Proyecto
+                Create a new project
               </Link>
             </p>
           </>

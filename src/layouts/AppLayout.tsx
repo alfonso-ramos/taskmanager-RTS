@@ -20,7 +20,7 @@ export default function AppLayout() {
                 <Outlet/>
             </section>
             <footer className="py-5 ">
-                <p className="text-center"> Todos los derechos reservados { new Date().getFullYear() }</p>
+                <p className="text-center"> All rights reserved - { new Date().getFullYear() }</p>
             </footer>
             <ToastContainer 
                 pauseOnHover={false}

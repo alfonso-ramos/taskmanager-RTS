@@ -1,5 +1,6 @@
 import { Task } from "@/types/index";
 import TaskCard from "./TaskCard";
+import { statusTranslations } from "@/locales/en";
 
 type TaskListProps = {
     tasks: Task[];
@@ -15,14 +16,6 @@ const initialStatusGroups : GroupedTask = {
     inProgress: [],
     underReview: [], 
     completed: [],
-}
-
-const statusTranslations : {[key: string] : string} = {
-    pending: 'Pending',
-    onHold: 'On hold',
-    inProgress: 'In Progress',
-    underReview: 'Under review', 
-    completed: 'Completed',
 }
 
 const statusStyles : {[key: string] : string} = {
@@ -42,7 +35,7 @@ export default function TaskList({ tasks }: TaskListProps) {
 
     return(
         <>
-            <h2 className="text-5xl font-black my-10">Tareas</h2>
+            <h2 className="text-5xl font-black my-10">Tasks</h2>
 
             <div className='flex gap-5 overflow-x-scroll 2xl:overflow-auto pb-32'>
                 {Object.entries(groupedTasks).map(([status, tasks]) => (

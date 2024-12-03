@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 
 
 export default function AddTaskModal() {
-    const navitage = useNavigate();
+    const navigate = useNavigate();
 
     // Modal exist
     const location = useLocation();
@@ -40,7 +40,7 @@ export default function AddTaskModal() {
             queryClient.invalidateQueries({queryKey: ["editProject", {projectId}]})
             toast.success(data)
             reset()
-            navitage(location.pathname, { replace: true })
+            navigate(location.pathname, { replace: true })
         }
     })
 
@@ -58,7 +58,7 @@ export default function AddTaskModal() {
             <Dialog
             as="div"
             className="relative z-10"
-            onClose={() => navitage(location.pathname, { replace: true })}
+            onClose={() => navigate(location.pathname, { replace: true })}
             >
             <Transition.Child
                 as={Fragment}

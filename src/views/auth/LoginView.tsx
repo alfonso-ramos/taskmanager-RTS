@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { UserLoginForm } from "@/types/index";
 import ErrorMessage from "@/components/ErrorMessage";
+import { Link } from "react-router-dom";
 
 export default function LoginView() {
 
@@ -27,13 +28,13 @@ export default function LoginView() {
           <input
             id="email"
             type="email"
-            placeholder="Email de Registro"
+            placeholder="Enter your emaila"
             className="w-full p-3  border-gray-300 border"
             {...register("email", {
-              required: "El Email es obligatorio",
+              required: "The email is mandatory",
               pattern: {
                 value: /\S+@\S+\.\S+/,
-                message: "E-mail no válido",
+                message: "Email in not valid",
               },
             })}
           />
@@ -49,10 +50,10 @@ export default function LoginView() {
 
           <input
             type="password"
-            placeholder="Password de Registro"
+            placeholder="Enter your password"
             className="w-full p-3  border-gray-300 border"
             {...register("password", {
-              required: "El Password es obligatorio",
+              required: "The password is mandatory",
             })}
           />
           {errors.password && (
@@ -62,10 +63,15 @@ export default function LoginView() {
 
         <input
           type="submit"
-          value='Iniciar Sesión'
+          value='Login'
           className="bg-fuchsia-600 hover:bg-fuchsia-700 w-full p-3  text-white font-black  text-xl cursor-pointer"
         />
       </form>
+      <nav className="mt-10 flex flex-col space-y-4">
+        <Link to={'/auth/register'} className="text-center text-gray-300 font-normal">
+          Don't you have an account? <span className='text-fuchsia-600 hover:text-fuchsia-700 transition-colors'>Create an account here</span> 
+        </Link>
+      </nav>
     </>
   )
 }

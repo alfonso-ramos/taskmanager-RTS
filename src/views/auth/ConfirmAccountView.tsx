@@ -42,7 +42,7 @@ export default function ConfirmAccountView() {
       >
         <label
           className="font-normal text-2xl text-center block"
-        >Código de 6 dígitos</label>
+        >6 digit token</label>
 
         <div className="flex justify-center gap-5">
           <PinInput value={token} onChange={handleChange} onComplete={handleComplete}>

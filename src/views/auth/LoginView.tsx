@@ -7,35 +7,41 @@ import { login } from "@/api/AuthAPI";
 import { toast } from "react-toastify";
 
 export default function LoginView() {
-
   const initialValues: UserLoginForm = {
-    email: '',
-    password: '',
-  }
-  const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues: initialValues })
+    email: "",
+    password: "",
+  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ defaultValues: initialValues });
 
-  const {mutate} = useMutation({
+  const { mutate } = useMutation({
     mutationFn: login,
     onError: (error) => {
-      toast.error(error.message)
+      toast.error(error.message);
     },
     onSuccess: (data) => {
-      toast.success(data)
-    }
-  })
-  const handleLogin = (formData: UserLoginForm) => mutate(formData)
+      toast.success(data);
+    },
+  });
+  const handleLogin = (formData: UserLoginForm) => mutate(formData);
 
   return (
     <>
+        <h1 className="text-5xl font-black text-white">Login</h1>
+        <p className="text-2xl font-light text-white mt-5">
+            Start planning your projects by {''}
+            <span className=" text-fuchsia-500 font-bold"> logging in</span>
+        </p>
       <form
         onSubmit={handleSubmit(handleLogin)}
-        className="space-y-8 p-10 bg-white"
+        className="space-y-8 p-10 mt-10 bg-white"
         noValidate
       >
         <div className="flex flex-col gap-5">
-          <label
-            className="font-normal text-2xl"
-          >Email</label>
+          <label className="font-normal text-2xl">Email</label>
 
           <input
             id="email"
@@ -50,15 +56,11 @@ export default function LoginView() {
               },
             })}
           />
-          {errors.email && (
-            <ErrorMessage>{errors.email.message}</ErrorMessage>
-          )}
+          {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
         </div>
 
         <div className="flex flex-col gap-5">
-          <label
-            className="font-normal text-2xl"
-          >Password</label>
+          <label className="font-normal text-2xl">Password</label>
 
           <input
             type="password"
@@ -75,15 +77,28 @@ export default function LoginView() {
 
         <input
           type="submit"
-          value='Login'
+          value="Login"
           className="bg-fuchsia-600 hover:bg-fuchsia-700 w-full p-3  text-white font-black  text-xl cursor-pointer"
         />
       </form>
       <nav className="mt-10 flex flex-col space-y-4">
-        <Link to={'/auth/register'} className="text-center text-gray-300 font-normal">
-          Don't you have an account? <span className='text-fuchsia-600 hover:text-fuchsia-700 transition-colors'>Create an account here</span> 
+        <Link
+          to={"/auth/register"}
+          className="text-center text-gray-300 font-normal"
+        >
+          Don't you have an account?{" "}
+          <span className="text-fuchsia-600 hover:text-fuchsia-700 transition-colors">
+            Create an account here
+          </span>
+        </Link>
+
+        <Link
+          to="/auth/forgot-password"
+          className="text-center text-gray-300 font-normal"
+        >
+          Forgot your password? Recovery it here
         </Link>
       </nav>
     </>
-  )
+  );
 }

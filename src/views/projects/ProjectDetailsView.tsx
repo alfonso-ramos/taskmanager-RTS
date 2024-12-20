@@ -5,8 +5,11 @@ import AddTaskModal from "@/components/tasks/AddTaskModal";
 import TaskList from "@/components/tasks/TaskList";
 import EditTaskData from '../../components/tasks/EditTaskData';
 import TaskModalDetails from '../../components/tasks/TaskModalDetails';
+import { useAuth } from "@/hooks/useAuth";
+import { isManager } from "@/utils/policies";
 
 export default function ProjectDetailsView() {
+    const { data: user, isLoading: authLoading } = useAuth()
     const navigate = useNavigate()
     const params = useParams();
     const projectId = params.projectId!;
@@ -17,29 +20,31 @@ export default function ProjectDetailsView() {
         retry: false
     });
 
-    if(isLoading) return 'Loading...'
+    if(isLoading && authLoading) return 'Loading...'
     if(isError) return <Navigate to='/404 '/>
 
-    if(data) return (
+    if(data && user)  return (
         <>
             <h1 className="text-5xl font-black">{data.projectName}</h1>
             <p className="text-2xl font-light text-gray-500 mt-5">{data.description}</p>
 
-            <nav className="my-5 flex gap-3">
-                <button 
-                    type="button" 
-                    className="bg-purple-400 hover:bg-purple-500 px-10 py-3 text-white text-xl font-bold cursor-pointer rounded-lg transition-colors"
-                    onClick={() => navigate( location.pathname + '?newTask=true')}>
-                    Add task
-                </button>
+            {isManager(data.manager, user._id) && (
+                <nav className="my-5 flex gap-3">
+                    <button 
+                        type="button" 
+                        className="bg-purple-400 hover:bg-purple-500 px-10 py-3 text-white text-xl font-bold cursor-pointer rounded-lg transition-colors"
+                        onClick={() => navigate( location.pathname + '?newTask=true')}>
+                        Add task
+                    </button>
 
-                <Link 
-                    className="bg-fuchsia-600 hover:bg-fuchsia-700 px-10 py-3 text-white text-xl font-bold cursor-pointer rounded-lg transition-colors"
-                    to={'team'}
-                >
-                    Collaborators
-                </Link>
-            </nav>
+                    <Link 
+                        className="bg-fuchsia-600 hover:bg-fuchsia-700 px-10 py-3 text-white text-xl font-bold cursor-pointer rounded-lg transition-colors"
+                        to={'team'}
+                    >
+                        Collaborators
+                    </Link>
+                </nav>
+            )}
             <TaskList
                 tasks={data.tasks}
             />

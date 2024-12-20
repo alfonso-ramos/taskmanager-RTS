@@ -64,7 +64,8 @@ export default function ProjectTeamView() {
             </Link>
         </nav>
 
-        <h2 className="text-5xl font-black my-10">Miembros actuales</h2>
+        <h2 className="text-5xl font-black my-10">Current members
+        </h2>
             {data.length ? (
                 <ul role="list" className="divide-y divide-gray-100 border border-gray-100 mt-10 bg-white shadow-lg">
                     {data?.map((member) => (
